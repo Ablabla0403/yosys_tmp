@@ -8,66 +8,40 @@
 module Final(
     clk,
 	rst_n,
-	mem_read_D,
-	mem_write_D,
-	mem_addr_D,
-	mem_wdata_D,
+	
+	//----------for slow_memD------------
 	mem_rdata_D,
 	mem_ready_D,
 
-	mem_read_I,
-	mem_write_I,
-	mem_addr_I,
-	mem_wdata_I,
+	//----------for slow_memI------------
 	mem_rdata_I,
 	mem_ready_I,
-	
-	ICACHE_addr,
-	DCACHE_addr,
-	DCACHE_wdata,
-	DCACHE_wen,
-	
+
+	//----------for TestBed--------------
 	error_num,
 	duration,
 	finish,
-	instruction_flush,
-	memory_stall,
-	branchType,
 );
 
 input			clk, rst_n;
-
-output			mem_read_D;
-output			mem_write_D;
-output	[31:4]	mem_addr_D;
-output	[127:0]	mem_wdata_D;
 input	[127:0]	mem_rdata_D;
 input			mem_ready_D;
-
-output			mem_read_I;
-output			mem_write_I;
-output	[31:4]	mem_addr_I;
-output	[127:0]	mem_wdata_I;
 input	[127:0]	mem_rdata_I;
 input			mem_ready_I;
 
-output  [29:0]  ICACHE_addr;
-output	[29:0]	DCACHE_addr;
-output	[31:0]	DCACHE_wdata;
-output			DCACHE_wen;
-output  		instruction_flush;
-output          memory_stall;
-output          branchType;
 
 output [7:0] error_num;
 output [15:0] duration;
 output finish;	
 
+
+// for slow_memD
 wire			mem_read_D;
 wire 			mem_write_D;
 wire	[31:4]	mem_addr_D;
 wire 	[127:0]	mem_wdata_D;
 
+// for slow_memI
 wire 			mem_read_I;
 wire 			mem_write_I;
 wire	[31:4]	mem_addr_I;
@@ -81,7 +55,7 @@ wire  			instruction_flush;
 wire          	memory_stall;
 wire          	branchType;
 
-CHIP chip0 (clk,
+CHIP chip0 (	clk,
 				rst_n,
 //----------for slow_memD------------	
 				mem_read_D,
