@@ -8,7 +8,6 @@
 module Final(
     clk,
 	rst_n,
-	
 	//----------for slow_memD------------
 	mem_rdata_D,
 	mem_ready_D,
