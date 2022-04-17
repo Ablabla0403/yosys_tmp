@@ -8,6 +8,7 @@
 module Final(
     clk,
 	rst_n,
+	mem_in
 	//----------for slow_memD------------
 	mem_rdata_D,
 	mem_ready_D,
@@ -27,6 +28,7 @@ input	[127:0]	mem_rdata_D;
 input			mem_ready_D;
 input	[127:0]	mem_rdata_I;
 input			mem_ready_I;
+input   [32*64*4-1:0] mem_in;
 
 
 output [7:0] error_num;
@@ -83,22 +85,26 @@ CHIP chip0 (	clk,
 	
 slow_memory slow_memD(
     .clk        (clk)           ,
+	.rst_n		(rst_n)			,
     .mem_read   (mem_read_D)    ,
     .mem_write  (mem_write_D)   ,
     .mem_addr   (mem_addr_D)    ,
     .mem_wdata  (mem_wdata_D)   ,
     .mem_rdata  (mem_rdata_D)   ,
-    .mem_ready  (mem_ready_D)
+    .mem_ready  (mem_ready_D)	,
+	.mem_in		(mem_in)
 );
 
 slow_memory slow_memI(
     .clk        (clk)           ,
+	.rst_n		(rst_n)			,
     .mem_read   (mem_read_I)    ,
     .mem_write  (mem_write_I)   ,
     .mem_addr   (mem_addr_I)    ,
     .mem_wdata  (mem_wdata_I)   ,
     .mem_rdata  (mem_rdata_I)   ,
-    .mem_ready  (mem_ready_I)
+    .mem_ready  (mem_ready_I)	,
+	.mem_in		(mem_in)
 );
 
 TestBed testbed(

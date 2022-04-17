@@ -3,12 +3,14 @@
 
 module slow_memory(
     clk,
+    rst_n,
     mem_read,
     mem_write,
     mem_addr,
     mem_wdata,
     mem_rdata,
-    mem_ready
+    mem_ready,
+    mem_in,
 );
     
     parameter MEM_NUM = 64;
@@ -20,10 +22,11 @@ module slow_memory(
     parameter BUBBLE = 2'd2; 
     parameter READY = 2'd3; 
     
-    input                  clk;
+    input                  clk, rst_n;
     input                  mem_read, mem_write;
     input           [27:0] mem_addr;
     input  [MEM_WIDTH-1:0] mem_wdata;
+    input           [32*MEM_NUM*4-1:0] mem_in;
     output [MEM_WIDTH-1:0] mem_rdata;
     output                 mem_ready;
     
@@ -41,7 +44,24 @@ module slow_memory(
     reg                    mem_ready, mem_ready_next;
     reg    [MEM_WIDTH-1:0] mem_rdata, mem_rdata_next;
     
-    integer i;
+    integer i, idx, idx2;
+
+    // initial begin
+    //     for (idx=0; idx<MEM_NUM*4; idx=idx+1) begin
+    //         for (idx2=0; idx2<32; idx2=idx2+1) begin
+    //             mem[idx][idx2] = mem_in[idx*32+idx2];
+    //         end
+    //     end
+    // end
+    // mem_in = mem;
+
+    always @(negedge rst_n) begin
+        for (idx=0; idx<MEM_NUM*4; idx=idx+1) begin
+            for (idx2=0; idx2<32; idx2=idx2+1) begin
+                mem[idx][idx2] = mem_in[idx*32+idx2];
+            end
+        end
+    end
 
     always@(*)begin // FSM & control sig
         case(state)
